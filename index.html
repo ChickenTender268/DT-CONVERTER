@@ -59,8 +59,10 @@
          <img src="Logo.png" alt="Company Logo" class="logo"> 
         <h2>DT POCKET</h2>
         <p>Enter your destination wallet address:</p>
-        <input type="text" id="walletAddress" class="wallet-input" placeholder="0x...">
-        <button class="convert-btn" onclick="openTransak()">Convert</button>
+        <input type="text" id="walletAddress" class="wallet-input" placeholder="Enter your USDT wallet address">
+<input type="number" id="fiatAmount" class="wallet-input" placeholder="Enter amount in USD">
+<button class="convert-btn" onclick="openPaybis()">Convert</button>
+
 
         <div class="secure-badge">
             <img alt="Secured">
@@ -68,18 +70,20 @@
     </div>
 
     <script>
-        function openTransak() {
-            const walletAddress = document.getElementById('walletAddress').value;
-            if (!walletAddress) {
-                alert("Please enter your wallet address.");
-                return;
-            }
+    function openPaybis() {
+        const walletAddress = document.getElementById('walletAddress').value;
+        const fiatAmount = document.getElementById('fiatAmount').value;
 
-            const transakUrl = `https://global.transak.com?apiKey=YOUR_API_KEY&defaultCryptoCurrency=USDT&walletAddress=${walletAddress}&cryptoCurrencyList=USDT&fiatCurrency=USD&isFeeCalculationHidden=false`;
-
-            window.open(transakUrl, '_blank');
+        if (!walletAddress || !fiatAmount) {
+            alert("Please enter both your wallet address and the USD amount.");
+            return;
         }
-    </script>
+
+        const paybisUrl = `https://paybis.com/buy-crypto/USD-to-USDT/?wallet=${walletAddress}&amount=${fiatAmount}`;
+
+        window.open(paybisUrl, '_blank');
+    }
+</script>
 
 </body>
 </html>
