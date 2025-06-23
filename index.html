@@ -2,85 +2,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-    <title>DT POCKET</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 40px;
-            text-align: center;
-        }
-        .converter-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            width: 90%;
-            max-width: 500px;
-        }
-        .secure-badge {
-    margin-bottom: 20px;
-    font-size: 0.9em;
-    color: #aaa;
-    opacity: 0.5;
-
-        }
-        .logo {
-            height: 50px;
-            margin-bottom: 20px;
-        }
-        .wallet-input {
-            padding: 10px;
-            width: 100%;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .convert-btn {
-            background-color: #0066ff;
-            color: #ffffff;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>DT POCKET</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .converter-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .logo {
+      height: 50px;
+      margin-bottom: 20px;
+    }
+    .wallet-input {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .convert-btn {
+      background-color: #0066ff;
+      color: #ffffff;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .secure-badge {
+      margin-top: 15px;
+      font-size: 0.85em;
+      color: #888;
+      opacity: 0.5;
+    }
+    .secure-badge img {
+      vertical-align: middle;
+      height: 20px;
+      margin-right: 6px;
+    }
+    iframe {
+      display: none;
+      width: 100%;
+      height: 600px;
+      border: none;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="converter-container">
-         <img src="Logo.png" alt="Company Logo" class="logo"> 
-        <h2>DT POCKET</h2>
-        <p>Enter your destination wallet address:</p>
-        <input type="text" id="walletAddress" class="wallet-input" placeholder="Enter your USDT wallet address">
-<button class="convert-btn" onclick="openPaybis()">Convert</button>
+  <div class="converter-container">
+    <img src="Logo.png" alt="Company Logo" class="logo">
+    <h2>Convert USD to USDT</h2>
 
+    <input type="text" id="walletAddress" class="wallet-input" placeholder="Enter your wallet address (0x...)">
+    <button class="convert-btn" onclick="embedPaybis()">Convert</button>
 
-        <div>
+    <iframe id="paybisIframe"></iframe>
 
-        </div>
+    <div class="secure-badge">
+      <img src="https://assets-global.website-files.com/60f1c7d04670e03e71659e68/60f1c7d04670e013a7659f0e_Frame%201.png" alt="Secured">
+      Secured & Automated
     </div>
+  </div>
 
-    <script>
-    function openPaybis() {
-        const walletAddress = document.getElementById('walletAddress').value;
-        const fiatAmount = document.getElementById('fiatAmount').value;
+  <script>
+    function embedPaybis() {
+      const wallet = document.getElementById("walletAddress").value;
+      if (!wallet) {
+        alert("Please enter your wallet address.");
+        return;
+      }
 
-        if (!walletAddress || !fiatAmount) {
-            alert("Please enter both your wallet address and the USD amount.");
-            return;
-        }
+      const iframe = document.getElementById("paybisIframe");
+      const fiatAmount = 100; // or dynamically update
+      const fiatCurrency = "USD";
+      const cryptoCurrency = "USDT";
 
-        const paybisUrl = `https://paybis.com/buy-crypto/USD-to-USDT/?wallet=0xYourDefaultWallet&amount=100&ref=your_ref_code
-`;
-
-        window.open(paybisUrl, '_blank');
+      const url = `https://paybis.com/buy-crypto/${fiatCurrency.toLowerCase()}-to-${cryptoCurrency.toLowerCase()}/?wallet=${wallet}&amount=${fiatAmount}&refId=42748`;
+      iframe.src = url;
+      iframe.style.display = "block";
     }
-</script>
+  </script>
 
 </body>
 </html>
+
