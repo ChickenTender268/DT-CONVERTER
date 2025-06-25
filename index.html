@@ -3,31 +3,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DT POCKET</title>
+  <title>USD to USDT Converter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
       padding: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      text-align: center;
     }
     .converter-container {
       background-color: #ffffff;
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
+      display: inline-block;
+      width: 90%;
       max-width: 500px;
-      text-align: center;
+    }
+    .secure-badge {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .secure-badge img {
+      vertical-align: middle;
+      height: 24px;
+      margin-right: 8px;
     }
     .logo {
       height: 50px;
       margin-bottom: 20px;
     }
-    .wallet-input {
+    .wallet-input,
+    .amount-input {
       padding: 10px;
       width: 100%;
       margin-bottom: 15px;
@@ -42,58 +50,48 @@
       font-size: 16px;
       cursor: pointer;
       border-radius: 5px;
-      margin-bottom: 15px;
-    }
-    .secure-badge {
-      margin-top: 15px;
-      font-size: 0.85em;
-      color: #888;
-      opacity: 0.5;
-    }
-    .secure-badge img {
-      vertical-align: middle;
-      height: 20px;
-      margin-right: 6px;
-    }
-    iframe {
-      display: none;
-      width: 100%;
-      height: 600px;
-      border: none;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
   <div class="converter-container">
-    <img src="Logo.png" alt="Company Logo" class="logo">
-    <h2>DT POCKET</h2>
-
-    <input type="text" id="walletAddress" class="wallet-input" placeholder="Enter your wallet address (0x...)">
-   <button class="convert-btn" onclick="openPaybis()">Convert</button>
-
-    <iframe id="paybisIframe"></iframe>
+    <img src="company_logo.png" alt="Company Logo" class="logo">
+    <h2>USD to USDT Conversion</h2>
+    <p>Destination wallet address:</p>
+    <input type="text" id="walletAddress" class="wallet-input" placeholder="0x...">
+    <p>Amount in USD:</p>
+    <input type="number" id="amount" class="amount-input" placeholder="Amount in USD">
+    <button class="convert-btn" onclick="openPaybisWindow()">Convert</button>
 
     <div class="secure-badge">
-      <img>
-      Secured & Automated
+      <img src="https://assets-global.website-files.com/60f1c7d04670e03e71659e68/60f1c7d04670e013a7659f0e_Frame%201.png" alt="Secured by Paybis">
+      Secured by Paybis
     </div>
   </div>
 
   <script>
-   function openPaybis() {
-  const wallet = document.getElementById("walletAddress").value;
-  if (!wallet) {
-    alert("Please enter your wallet address.");
-    return;
-  }
-  const fiatAmount = 100; // example
-  const url = `https://paybis.com/buy-crypto/usd-to-usdt/?wallet=${wallet}&amount=${fiatAmount}&refId=42748`;
-  window.open(url, "_blank");
+    function openPaybisWindow() {
+      const wallet = document.getElementById("walletAddress").value;
+      const amount = document.getElementById("amount").value;
+
+      if (!wallet || !amount) {
+        alert("Please enter both wallet address and amount.");
+        return;
+      }
+
+      const paybisUrl = `https://paybis.com/buy-crypto/usd-to-usdt/?wallet=${wallet}&amount=${amount}&refId=42748`;
+
+      // Open Paybis in a new window (NOT just a tab)
+      window.open(
+        paybisUrl,
+        "PaybisWindow",
+        "width=900,height=800,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes"
+      );
     }
   </script>
 
 </body>
 </html>
+
 
