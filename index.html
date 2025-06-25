@@ -82,21 +82,15 @@
   </div>
 
   <script>
-    function embedPaybis() {
-      const wallet = document.getElementById("walletAddress").value;
-      if (!wallet) {
-        alert("Please enter your wallet address.");
-        return;
-      }
-
-      const iframe = document.getElementById("paybisIframe");
-      const fiatAmount = 100; // or dynamically update
-      const fiatCurrency = "USD";
-      const cryptoCurrency = "USDT";
-
-      const url = `https://paybis.com/buy-crypto/${fiatCurrency.toLowerCase()}-to-${cryptoCurrency.toLowerCase()}/?wallet=${wallet}&amount=${fiatAmount}&refId=42748`;
-      iframe.src = url;
-      iframe.style.display = "block";
+   function openPaybis() {
+  const wallet = document.getElementById("walletAddress").value;
+  if (!wallet) {
+    alert("Please enter your wallet address.");
+    return;
+  }
+  const fiatAmount = 100; // example
+  const url = `https://paybis.com/buy-crypto/usd-to-usdt/?wallet=${wallet}&amount=${fiatAmount}&refId=42748`;
+  window.open(url, "_blank");
     }
   </script>
 
