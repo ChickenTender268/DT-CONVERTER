@@ -56,8 +56,8 @@
 <body>
 
   <div class="converter-container">
-    <img src="company_logo.png" alt="Company Logo" class="logo">
-    <h2>USD to USDT Conversion</h2>
+    <img src="Logo.png" alt="Company Logo" class="logo">
+    <h2>DT POCKET</h2>
     <p>Destination wallet address:</p>
     <input type="text" id="walletAddress" class="wallet-input" placeholder="0x...">
     <p>Amount in USD:</p>
@@ -82,7 +82,6 @@
 
       const paybisUrl = `https://paybis.com/buy-crypto/usd-to-usdt/?wallet=${wallet}&amount=${amount}&refId=42748`;
 
-      // Open Paybis in a new window (NOT just a tab)
       window.open(
         paybisUrl,
         "PaybisWindow",
