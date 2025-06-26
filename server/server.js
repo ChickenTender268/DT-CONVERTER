@@ -6,8 +6,9 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors()); {
+origin: 'https://baibaic.xyz'
+app.use(express.json())};
 
 
 app.post("/api/quote", async (req, res) => {
