@@ -1,4 +1,3 @@
-// server.js (Backend)
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -10,15 +9,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Step 1: Get pricing and calculate receipt with 10% fee (Mocked for Paybis integration)
+
 app.post("/api/quote", async (req, res) => {
   const { fiatAmount, fiatCurrency, cryptoCurrency } = req.body;
 
   try {
-    // Placeholder logic simulating Paybis price fetch
-    const rate = 1; // Example rate: 1 USD = 1 USDT
+    const rate = 1; 
     const cryptoAmount = fiatAmount * rate;
-    const chargePercentage = 0.10; // 10% markup
+    const chargePercentage = 0.10;
     const adjustedCryptoAmount = cryptoAmount * (1 - chargePercentage);
 
     res.status(200).json({
@@ -35,15 +33,13 @@ app.post("/api/quote", async (req, res) => {
   }
 });
 
-// Step 2: Redirect to Paybis Widget after simulated delay
 app.post("/api/initiate", async (req, res) => {
   const { userAddress, fiatAmount, fiatCurrency, cryptoCurrency } = req.body;
 
   try {
-    // Optional delay for UX
-    await new Promise(resolve => setTimeout(resolve, 3000)); // 3s loading
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Generate Paybis URL with query params
+  
     const paybisUrl = `https://paybis.com/buy-crypto/${fiatCurrency.toLowerCase()}-to-${cryptoCurrency.toLowerCase()}/?wallet=${userAddress}&amount=${fiatAmount}`;
 
     res.status(200).json({ url: paybisUrl });
