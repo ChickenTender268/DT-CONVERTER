@@ -41,7 +41,7 @@ app.post("/api/initiate", async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
   
-    const paybisUrl = `https://paybis.com/buy-crypto/${fiatCurrency.toLowerCase()}-to-${cryptoCurrency.toLowerCase()}/?wallet=${userAddress}&amount=${fiatAmount}`;
+    const paybisUrl = `https://paybis.com/?refId=42748`;
 
     res.status(200).json({ url: paybisUrl });
   } catch (err) {
