@@ -1,8 +1,10 @@
-const ABI = require("./contractABI");
 const express = require("express");
+const { ethers } = require("ethers");
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
+
+const ABI = require("./contractABI");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
