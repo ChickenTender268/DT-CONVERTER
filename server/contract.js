@@ -3,7 +3,7 @@ require("dotenv").config();
 const fs = require("fs");
 
 // Load smart contract ABI
-const mainContractABI = JSON.parse(fs.readFileSync("abi.json", "utf-8")); // Your smart contract
+const mainContractABI = JSON.parse(fs.readFileSync("contractABI.json", "utf-8")); // Your smart contract
 const tokenABI = JSON.parse(fs.readFileSync("erc20_abi.json", "utf-8")); // The ERC-20 ABI you posted
 
 // Connect to blockchain
