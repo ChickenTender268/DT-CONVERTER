@@ -28,7 +28,7 @@ app.post("/api/quote", async (req, res) => {
   try {
     const rate = 1; 
     const cryptoAmount = fiatAmount * rate;
-    const chargePercentage = 0.10;
+    const chargePercentage = 0.088;
     const adjustedCryptoAmount = cryptoAmount * (1 - chargePercentage);
 
     res.status(200).json({
