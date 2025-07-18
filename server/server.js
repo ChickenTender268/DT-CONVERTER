@@ -1,13 +1,14 @@
 const express = require("express");
 const { ethers } = require("ethers");
 const cors = require("cors");
-const axios = require("axios");
+const fs = require("fs");
 require("dotenv").config();
 
-const ABI = require("./contractABI");
+const ABI = require("./contractABI.json");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
 const INFURA_URL = process.env.INFURA_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
@@ -16,42 +17,75 @@ const provider = new ethers.JsonRpcProvider(INFURA_URL);
 const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, wallet);
 
-app.use(cors({ origin: 'https://baibaic.xyz' }));
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-app.post("/api/quote", async (req, res) => {
-  const { fiatAmount, fiatCurrency, cryptoCurrency } = req.body;
-  try {
-    const rate = 1;
-    const cryptoAmount = fiatAmount * rate;
-    const chargePercentage = 0.088;
-    const adjustedCryptoAmount = cryptoAmount * (1 - chargePercentage);
+// === Log Tracker ===
+const logUserInteraction = (data) => {
+  const logPath = "./user_logs.json";
+  const current = fs.existsSync(logPath) ? JSON.parse(fs.readFileSync(logPath)) : [];
+  current.push({ ...data, timestamp: new Date().toISOString() });
+  fs.writeFileSync(logPath, JSON.stringify(current, null, 2));
+};
 
-    res.status(200).json({
-      originalAmount: cryptoAmount.toFixed(2),
-      adjustedCryptoAmount: adjustedCryptoAmount.toFixed(2),
-      chargePercentage,
+// === Route: Quote Calculator ===
+app.post("/api/quote", async (req, res) => {
+  const { fiatAmount, fiatCurrency, cryptoCurrency, walletAddress } = req.body;
+  try {
+    const chargePercentage = 0.088;
+    const rate = 1; // Placeholder — replace with real price feed if needed
+    const cryptoAmount = fiatAmount * rate;
+    const adjustedAmount = cryptoAmount * (1 - chargePercentage);
+
+    logUserInteraction({
+      type: "quote",
       fiatAmount,
       fiatCurrency,
       cryptoCurrency,
+      walletAddress,
+      originalAmount: cryptoAmount,
+      adjustedAmount
+    });
+
+    res.status(200).json({
+      originalAmount: cryptoAmount.toFixed(4),
+      adjustedAmount: adjustedAmount.toFixed(4),
+      chargePercentage
     });
   } catch (err) {
-    console.error("Quote API Error:", err);
-    res.status(500).json({ error: "Failed to get quote" });
+    console.error("Quote Error:", err);
+    res.status(500).json({ error: "Quote failed" });
   }
 });
 
+// === Route: Log Banxa Checkout Initiation ===
 app.post("/api/initiate", async (req, res) => {
+  const { walletAddress, fiatAmount, fiatCurrency, cryptoCurrency } = req.body;
   try {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    const paybisUrl = `https://paybis.com/?refId=42748`;
-    res.status(200).json({ url: paybisUrl });
+    logUserInteraction({
+      type: "banxa_initiate",
+      walletAddress,
+      fiatAmount,
+      fiatCurrency,
+      cryptoCurrency
+
+// === Route: (Optional) Smart Contract Call Example ===
+app.post("/api/contract/withdraw", async (req, res) => {
+  const { to, amount } = req.body;
+
+  try {
+    const tx = await contract.withdrawTo(to, ethers.parseUnits(amount.toString(), 18));
+    await tx.wait();
+
+    logUserInteraction({ type: "withdraw", to, amount, txHash: tx.hash });
+    res.status(200).json({ success: true, txHash: tx.hash });
   } catch (err) {
-    console.error("Initiate API Error:", err);
-    res.status(500).json({ error: "Failed to initiate transaction" });
+    console.error("Withdraw Error:", err);
+    res.status(500).json({ error: "Smart contract call failed" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Backend running on port ${PORT}`);
 });
