@@ -2,7 +2,7 @@ const express = require("express");
 const { ethers } = require("ethers");
 const cors = require("cors");
 const fs = require("fs");
-require("dotenv").config();
+require('dotenv').config();
 
 const ABI = require("./contractABI.json");
 
