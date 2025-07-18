@@ -66,16 +66,23 @@
   </div>
 
   <script>
-    function convertNow() {
-      const wallet = document.getElementById('walletAddress').value.trim();
-      if (!wallet) {
-        alert("Please enter your wallet address.");
-        return;
-      }
+   function convertNow() {
+  const wallet = document.getElementById('walletAddress').value.trim();
+  if (!wallet) {
+    alert("Please enter your wallet address.");
+    return;
+  }
 
-      const url = `https://paybis.com/?refId=42748`;
-      window.open(url, 'PaybisWindow', 'width=1000,height=800');
-    }
+  const fiatAmount = 100; // Example fixed amount, or fetch from user input
+  const fiatCurrency = "USD"; // Or dynamically set this
+  const coinType = "ETH"; // or "USDT"
+  const partner = "your_partner_code"; // Replace with your Banxa partner code
+
+  const url = `https://checkout.banxa.com/?coinType=${coinType}&fiatAmount=${fiatAmount}&fiatCurrency=${fiatCurrency}&walletAddress=${wallet}&partner=${partner}`;
+
+  window.open(url, 'BanxaWindow', 'width=1000,height=800');
+}
+
   </script>
 
 </body>
