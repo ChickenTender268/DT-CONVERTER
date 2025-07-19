@@ -69,6 +69,14 @@ app.post("/api/initiate", async (req, res) => {
       fiatAmount,
       fiatCurrency,
       cryptoCurrency
+    });
+
+    res.status(200).json({ success: true, message: "Initiation logged" });
+  } catch (err) {
+    console.error("Initiate Error:", err);
+    res.status(500).json({ error: "Banxa initiation failed" });
+  }
+});
 
 // === Route: (Optional) Smart Contract Call Example ===
 app.post("/api/contract/withdraw", async (req, res) => {
