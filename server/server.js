@@ -7,7 +7,7 @@ require('dotenv').config();
 const ABI = require("./contractABI.json");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const INFURA_URL = process.env.INFURA_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
